@@ -4,3 +4,4 @@ CREATE PROCEDURE 01_llistaTreballadors()
     SELECT *
     FROM   TREBALLADORS;
   END //
+  
