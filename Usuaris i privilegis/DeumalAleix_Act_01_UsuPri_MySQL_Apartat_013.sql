@@ -1,0 +1,1 @@
+DROP USER 'DeumalAleix_admin'@'localhost';

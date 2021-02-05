@@ -1,0 +1,1 @@
+SHOW GRANTS FOR 'DeumalAleix_admin'@'localhost';
