@@ -5,7 +5,7 @@ Revisió dels exercicis de la **unitat formativa 3** del **mòdul professional 2
 |Enunciat|Fitxer|Comentari|Nota|
 |--------|------|---------|----|
 |**Enunciat 9**|[Act09.sql](https://github.com/aleixdeumal/exercicis_mp02_uf03/blob/master/exercicis_mp02_uf03/DeumalAleix_Act_03_ProcEmm_MySQL/DeumalAleix_Act_03_ProcEmm_MySQL_Apartat_009.sql)|?????|?????|
-|**Enunciat 11**||[Act11.sql](https://github.com/aleixdeumal/exercicis_mp02_uf03/blob/master/exercicis_mp02_uf03/DeumalAleix_Act_03_ProcEmm_MySQL/DeumalAleix_Act_03_ProcEmm_MySQL_Apartat_011.sql)|?????|
+|**Enunciat 11**|[Act11.sql](https://github.com/aleixdeumal/exercicis_mp02_uf03/blob/master/exercicis_mp02_uf03/DeumalAleix_Act_03_ProcEmm_MySQL/DeumalAleix_Act_03_ProcEmm_MySQL_Apartat_011.sql)|????|?????|
 |**Enunciat 12**|?????|?????|?????|
 |**Enunciat 13**|?????|?????|?????|
 
@@ -722,20 +722,136 @@ SELECT  titol_peli Titol, Ex11(1) "Quantitat exemplars"
 ## Dissenya una funció que rebi el codi d’una pel·lícula i torni el nom i cognoms del seu actor principal.<br>Utilitza aquesta funció per llistar el títol de la pel·lícula i el nom i cognoms del seu actor principal.
 
 **1. Enllaç al fitxer**
-
+[Act12.sql](https://github.com/aleixdeumal/exercicis_mp02_uf03/blob/master/exercicis_mp02_uf03/DeumalAleix_Act_03_ProcEmm_MySQL/DeumalAleix_Act_03_ProcEmm_MySQL_Apartat_012.sql)
 **2. Contingut del fitxer**
 ```sql
-   <El codi del vostre fitxer>
+    USE videoclub;
+    DROP FUNCTION IF EXISTS Ex12;
+    DELIMITER //
+    CREATE FUNCTION Ex12(CodiPeli SMALLINT UNSIGNED) 
+        RETURNS SMALLINT
+        DETERMINISTIC
+    BEGIN
+        DECLARE fi int default false;
+        DECLARE CodiActor SMALLINT UNSIGNED;
+        DECLARE curso cursor for
+            SELECT   id_actor
+            FROM ACTORS_PELLICULES
+            WHERE id_peli = CodiPeli
+            AND principal = 1;
+    
+    DECLARE CONTINUE HANDLER FOR NOT FOUND 
+    SET fi = 1;
+    open curso;
+    bucle:loop
+        fetch curso into CodiActor;
+
+        if fi = 1 then leave bucle;
+        end if;
+        RETURN CodiActor;
+    END loop bucle;
+    close curso;
+    
+    END//
+DELIMITER ;
+
+SELECT ACTORS.nom_actor, PELLICULES.titol_peli
+FROM ACTORS , PELLICULES
+WHERE id_actor = Ex12(2) AND id_peli = 2;
+    END
 ```
 
 **3. Sortida de la creació del procediment**
 ```sql
-   <La sortida de la creació del vostre procediment>
+   mysql> USE videoclub;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql>     DROP FUNCTION IF EXISTS Ex12;
+--------------
+DROP FUNCTION IF EXISTS Ex12
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>     DELIMITER //
+mysql>     CREATE FUNCTION Ex12(CodiPeli SMALLINT UNSIGNED)
+    ->         RETURNS SMALLINT
+    ->         DETERMINISTIC
+    ->     BEGIN
+    ->         DECLARE fi int default false;
+    ->         DECLARE CodiActor SMALLINT UNSIGNED;
+    ->         DECLARE curso cursor for
+    ->             SELECT   id_actor
+    ->             FROM ACTORS_PELLICULES
+    ->             WHERE id_peli = CodiPeli
+    ->             AND principal = 1;
+    ->
+    ->     DECLARE CONTINUE HANDLER FOR NOT FOUND
+    ->     SET fi = 1;
+    ->     open curso;
+    ->     bucle:loop
+    ->         fetch curso into CodiActor;
+    ->
+    ->         if fi = 1 then leave bucle;
+    ->         end if;
+    ->         RETURN CodiActor;
+    ->     END loop bucle;
+    ->     close curso;
+    ->
+    ->     END//
+--------------
+CREATE FUNCTION Ex12(CodiPeli SMALLINT UNSIGNED)
+        RETURNS SMALLINT
+        DETERMINISTIC
+    BEGIN
+        DECLARE fi int default false;
+        DECLARE CodiActor SMALLINT UNSIGNED;
+        DECLARE curso cursor for
+            SELECT   id_actor
+            FROM ACTORS_PELLICULES
+            WHERE id_peli = CodiPeli
+            AND principal = 1;
+
+    DECLARE CONTINUE HANDLER FOR NOT FOUND
+    SET fi = 1;
+    open curso;
+    bucle:loop
+        fetch curso into CodiActor;
+
+        if fi = 1 then leave bucle;
+        end if;
+        RETURN CodiActor;
+    END loop bucle;
+    close curso;
+
+    END
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELIMITER ;
+
 ```
 
 **4. Sortida de l'execució del procediment**
 ```sql
-   <La sortida de l'execució del vostre procediment>
+   mysql> SELECT ACTORS.nom_actor, PELLICULES.titol_peli
+    -> FROM ACTORS , PELLICULES
+    -> WHERE id_actor = Ex12(2) AND id_peli = 2;
+--------------
+SELECT ACTORS.nom_actor, PELLICULES.titol_peli
+FROM ACTORS , PELLICULES
+WHERE id_actor = Ex12(2) AND id_peli = 2
+--------------
+
++-----------+-------------+
+| nom_actor | titol_peli  |
++-----------+-------------+
+| Tom Hanks | LA TERMINAL |
++-----------+-------------+
+1 row in set (0.00 sec)
 ```
 
 ---
