@@ -5,7 +5,7 @@ Revisió dels exercicis de la **unitat formativa 3** del **mòdul professional 2
 |Enunciat|Fitxer|Comentari|Nota|
 |--------|------|---------|----|
 |**Enunciat 9**|[Act09.sql](https://github.com/aleixdeumal/exercicis_mp02_uf03/blob/master/exercicis_mp02_uf03/DeumalAleix_Act_03_ProcEmm_MySQL/DeumalAleix_Act_03_ProcEmm_MySQL_Apartat_009.sql)|?????|?????|
-|**Enunciat 11**|?????|?????|?????|
+|**Enunciat 11**||[Act11.sql](https://github.com/aleixdeumal/exercicis_mp02_uf03/blob/master/exercicis_mp02_uf03/DeumalAleix_Act_03_ProcEmm_MySQL/DeumalAleix_Act_03_ProcEmm_MySQL_Apartat_011.sql)|?????|
 |**Enunciat 12**|?????|?????|?????|
 |**Enunciat 13**|?????|?????|?????|
 
@@ -617,20 +617,102 @@ Query OK, 0 rows affected (0.01 sec)
 ## Dissenya una funció que rebent un codi de pel·lícula torni el nombre d’usuaris que l’han vist.<br>Utilitza aquesta funció per llistar el títol de la pel·lícula i el nom de l’usuari.
 
 **1. Enllaç al fitxer**
-
+[Act11.sql](https://github.com/aleixdeumal/exercicis_mp02_uf03/blob/master/exercicis_mp02_uf03/DeumalAleix_Act_03_ProcEmm_MySQL/DeumalAleix_Act_03_ProcEmm_MySQL_Apartat_011.sql)
 **2. Contingut del fitxer**
 ```sql
-   <El codi del vostre fitxer>
+USE videoclub;
+DROP FUNCTION IF EXISTS Ex11;
+
+DELIMITER //
+CREATE FUNCTION Ex11(Peli SMALLINT UNSIGNED)
+       RETURNS SMALLINT UNSIGNED
+       DETERMINISTIC
+BEGIN
+   DECLARE Visualitzats SMALLINT UNSIGNED;
+
+   SELECT   COUNT(*)
+        INTO Visualitzats
+   FROM     PRESTECS
+   WHERE    id_peli = Peli;
+
+   RETURN Visualitzats;
+END//
+DELIMITER ;
+-- SELECT
+  SELECT  titol_peli Titol, Ex11(1) "Quantitat exemplars"
+   FROM    PELLICULES
+   WHERE   id_peli = 1;
 ```
 
 **3. Sortida de la creació del procediment**
 ```sql
-   <La sortida de la creació del vostre procediment>
+   mysql> USE videoclub;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> DROP FUNCTION IF EXISTS Ex11;
+--------------
+DROP FUNCTION IF EXISTS Ex11
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql>
+mysql> DELIMITER //
+mysql> CREATE FUNCTION Ex11(Peli SMALLINT UNSIGNED)
+    ->        RETURNS SMALLINT UNSIGNED
+    ->        DETERMINISTIC
+    -> BEGIN
+    ->    DECLARE Visualitzats SMALLINT UNSIGNED;
+    ->
+    ->    SELECT   COUNT(*)
+    ->         INTO Visualitzats
+    ->    FROM     PRESTECS
+    ->    WHERE    id_peli = Peli;
+    ->
+    ->    RETURN Visualitzats;
+    -> END//
+--------------
+CREATE FUNCTION Ex11(Peli SMALLINT UNSIGNED)
+       RETURNS SMALLINT UNSIGNED
+       DETERMINISTIC
+BEGIN
+   DECLARE Visualitzats SMALLINT UNSIGNED;
+
+   SELECT   COUNT(*)
+        INTO Visualitzats
+   FROM     PRESTECS
+   WHERE    id_peli = Peli;
+
+   RETURN Visualitzats;
+END
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql> DELIMITER ;
+
 ```
 
 **4. Sortida de l'execució del procediment**
 ```sql
-   <La sortida de l'execució del vostre procediment>
+   mysql>   SELECT  titol_peli Titol, Ex11(1) "Quantitat exemplars"
+    ->    FROM    PELLICULES
+    ->    WHERE   id_peli = 1;
+--------------
+SELECT  titol_peli Titol, Ex11(1) "Quantitat exemplars"
+   FROM    PELLICULES
+   WHERE   id_peli = 1
+--------------
+
++-------------+---------------------+
+| Titol       | Quantitat exemplars |
++-------------+---------------------+
+| La busqueda |                   3 |
++-------------+---------------------+
+1 row in set (0.00 sec)
+
 ```
 
 ---

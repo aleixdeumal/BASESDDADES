@@ -1,3 +1,4 @@
+USE videoclub;
 DROP FUNCTION IF EXISTS Ex11;
 
 DELIMITER //
@@ -9,11 +10,14 @@ BEGIN
 
    SELECT   COUNT(*)
         INTO Visualitzats
-   FROM     EXEMPLARS
+   FROM     PRESTECS
    WHERE    id_peli = Peli;
 
    RETURN Visualitzats;
 END//
 DELIMITER ;
--- call Ex11();
+-- SELECT
+  SELECT  titol_peli Titol, act11(1) "Quantitat exemplars"
+   FROM    PELLICULES
+   WHERE   id_peli = 1;
 
