@@ -6,7 +6,7 @@ Revisió dels exercicis de la **unitat formativa 3** del **mòdul professional 2
 |--------|------|---------|----|
 |**Enunciat 9**|[Act09.sql](https://github.com/aleixdeumal/exercicis_mp02_uf03/blob/master/exercicis_mp02_uf03/DeumalAleix_Act_03_ProcEmm_MySQL/DeumalAleix_Act_03_ProcEmm_MySQL_Apartat_009.sql)|?????|?????|
 |**Enunciat 11**|[Act11.sql](https://github.com/aleixdeumal/exercicis_mp02_uf03/blob/master/exercicis_mp02_uf03/DeumalAleix_Act_03_ProcEmm_MySQL/DeumalAleix_Act_03_ProcEmm_MySQL_Apartat_011.sql)|????|?????|
-|**Enunciat 12**|?????|?????|?????|
+|**Enunciat 12**|[Act12.sql](https://github.com/aleixdeumal/exercicis_mp02_uf03/blob/master/exercicis_mp02_uf03/DeumalAleix_Act_03_ProcEmm_MySQL/DeumalAleix_Act_03_ProcEmm_MySQL_Apartat_012.sql)|?????|?????|
 |**Enunciat 13**|?????|?????|?????|
 
 
