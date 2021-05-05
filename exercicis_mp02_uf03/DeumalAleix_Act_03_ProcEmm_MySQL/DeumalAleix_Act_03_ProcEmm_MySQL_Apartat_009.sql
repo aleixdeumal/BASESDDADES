@@ -1,3 +1,4 @@
+use videoclub;
 DELIMITER //
 DROP PROCEDURE IF EXISTS loopedat09//
 CREATE PROCEDURE loopedat09()

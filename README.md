@@ -246,19 +246,368 @@ Query OK, 0 rows affected (0.01 sec)
 
 **1. Enllaç al fitxer**
 
+[Act09.sql](https://github.com/aleixdeumal/exercicis_mp02_uf03/blob/master/exercicis_mp02_uf03/DeumalAleix_Act_03_ProcEmm_MySQL/DeumalAleix_Act_03_ProcEmm_MySQL_Apartat_009.sql)
+
 **2. Contingut del fitxer**
 ```sql
-   <El codi del vostre fitxer>
+   DELIMITER //
+DROP PROCEDURE IF EXISTS loopedat09//
+CREATE PROCEDURE loopedat09()
+BEGIN
+   DECLARE cActor bigint default 0;
+   DECLARE final int default false;
+
+   DECLARE elcursor cursor for
+      SELECT id_actor
+      FROM ACTORS;
+
+   DECLARE continue handler for not found SET final = 1;
+   open elcursor;
+   elbucle:loop
+      fetch elcursor into cActor;
+
+      if final = 1 then
+         leave elbucle;
+      end if;
+      SELECT nom_actor, year(curdate()) - anynaix_actor"anys", anynaix_actor, sexe_actor,
+      /*condicio home*/
+      if(sexe_actor="home",
+      if(year(curdate()) - anynaix_actor<15,"nen",
+      if(year(curdate()) - anynaix_actor BETWEEN 15 AND 25,"home adolescent i jove",
+      if(year(curdate()) - anynaix_actor BETWEEN 26 AND 40, "home adult",
+      if(year(curdate()) - anynaix_actor BETWEEN 41 AND 60, "home madur",
+      if(year(curdate()) - anynaix_actor>61, "home gran",""))))),
+
+      /*condicio dona*/
+      if(year(curdate()) - anynaix_actor<15,"nena",
+      if(year(curdate()) - anynaix_actor BETWEEN 15 AND 25,"dona adolescent i jove",
+      if(year(curdate()) - anynaix_actor BETWEEN 26 AND 40, "dona adulta",
+      if(year(curdate()) - anynaix_actor BETWEEN 41 AND 60, "dona madura",
+      if(year(curdate()) - anynaix_actor>61, "dona gran","")))))) as "Paper que pot interpretar"
+      FROM ACTORS
+      WHERE ACTORS.id_actor = cActor;
+   END loop elbucle;
+   close elcursor;
+END//
+
+DELIMITER ;
+
+-- call loopedat09();
 ```
 
 **3. Sortida de la creació del procediment**
 ```sql
-   <La sortida de la creació del vostre procediment>
+   mysql> use videoclub;
+Reading table information for completion of table and column names
+You can turn off this feature to get a quicker startup with -A
+
+Database changed
+mysql> DELIMITER //
+mysql> DROP PROCEDURE IF EXISTS loopedat09//
+--------------
+DROP PROCEDURE IF EXISTS loopedat09
+--------------
+
+Query OK, 0 rows affected (0.01 sec)
+
+mysql> CREATE PROCEDURE loopedat09()
+    -> BEGIN
+    ->    DECLARE cActor bigint default 0;
+    ->    DECLARE final int default false;
+    ->
+    ->    DECLARE elcursor cursor for
+    ->       SELECT id_actor
+    ->       FROM ACTORS;
+    ->
+    ->    DECLARE continue handler for not found SET final = 1;
+    ->    open elcursor;
+    ->    elbucle:loop
+    ->       fetch elcursor into cActor;
+    ->
+    ->       if final = 1 then
+    ->          leave elbucle;
+    ->       end if;
+    ->       SELECT nom_actor, year(curdate()) - anynaix_actor"anys", anynaix_actor, sexe_actor,
+    ->       /*condicio home*/
+    ->       if(sexe_actor="home",
+    ->       if(year(curdate()) - anynaix_actor<15,"nen",
+    ->       if(year(curdate()) - anynaix_actor BETWEEN 15 AND 25,"home adolescent i jove",
+    ->       if(year(curdate()) - anynaix_actor BETWEEN 26 AND 40, "home adult",
+    ->       if(year(curdate()) - anynaix_actor BETWEEN 41 AND 60, "home madur",
+    ->       if(year(curdate()) - anynaix_actor>61, "home gran",""))))),
+    ->
+    ->       /*condicio dona*/
+    ->       if(year(curdate()) - anynaix_actor<15,"nena",
+    ->       if(year(curdate()) - anynaix_actor BETWEEN 15 AND 25,"dona adolescent i jove",
+    ->       if(year(curdate()) - anynaix_actor BETWEEN 26 AND 40, "dona adulta",
+    ->       if(year(curdate()) - anynaix_actor BETWEEN 41 AND 60, "dona madura",
+    ->       if(year(curdate()) - anynaix_actor>61, "dona gran","")))))) as "Paper que pot interpretar"
+    ->       FROM ACTORS
+    ->       WHERE ACTORS.id_actor = cActor;
+    ->    END loop elbucle;
+    ->    close elcursor;
+    -> END//
+--------------
+CREATE PROCEDURE loopedat09()
+BEGIN
+   DECLARE cActor bigint default 0;
+   DECLARE final int default false;
+
+   DECLARE elcursor cursor for
+      SELECT id_actor
+      FROM ACTORS;
+
+   DECLARE continue handler for not found SET final = 1;
+   open elcursor;
+   elbucle:loop
+      fetch elcursor into cActor;
+
+      if final = 1 then
+         leave elbucle;
+      end if;
+      SELECT nom_actor, year(curdate()) - anynaix_actor"anys", anynaix_actor, sexe_actor,
+
+      if(sexe_actor="home",
+      if(year(curdate()) - anynaix_actor<15,"nen",
+      if(year(curdate()) - anynaix_actor BETWEEN 15 AND 25,"home adolescent i jove",
+      if(year(curdate()) - anynaix_actor BETWEEN 26 AND 40, "home adult",
+      if(year(curdate()) - anynaix_actor BETWEEN 41 AND 60, "home madur",
+      if(year(curdate()) - anynaix_actor>61, "home gran",""))))),
+
+
+      if(year(curdate()) - anynaix_actor<15,"nena",
+      if(year(curdate()) - anynaix_actor BETWEEN 15 AND 25,"dona adolescent i jove",
+      if(year(curdate()) - anynaix_actor BETWEEN 26 AND 40, "dona adulta",
+      if(year(curdate()) - anynaix_actor BETWEEN 41 AND 60, "dona madura",
+      if(year(curdate()) - anynaix_actor>61, "dona gran","")))))) as "Paper que pot interpretar"
+      FROM ACTORS
+      WHERE ACTORS.id_actor = cActor;
+   END loop elbucle;
+   close elcursor;
+END
+--------------
+
+Query OK, 0 rows affected (0.00 sec)
+
+mysql>
+mysql> DELIMITER ;
+mysql>
+
+
 ```
 
 **4. Sortida de l'execució del procediment**
 ```sql
-   <La sortida de l'execució del vostre procediment>
+  mysql> call loopedat09();
+--------------
+call loopedat09()
+--------------
+
++--------------+------+---------------+------------+---------------------------+
+| nom_actor    | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++--------------+------+---------------+------------+---------------------------+
+| Nicolas Cage |   57 |          1964 | home       | home madur                |
++--------------+------+---------------+------------+---------------------------+
+1 row in set (0.00 sec)
+
++--------------+------+---------------+------------+---------------------------+
+| nom_actor    | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++--------------+------+---------------+------------+---------------------------+
+| Diane Kruger |   45 |          1976 | dona       | dona madura               |
++--------------+------+---------------+------------+---------------------------+
+1 row in set (0.00 sec)
+
++-----------+------+---------------+------------+---------------------------+
+| nom_actor | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++-----------+------+---------------+------------+---------------------------+
+| Tom Hanks |   65 |          1956 | home       | home gran                 |
++-----------+------+---------------+------------+---------------------------+
+1 row in set (0.00 sec)
+
++----------------------+------+---------------+------------+---------------------------+
+| nom_actor            | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++----------------------+------+---------------+------------+---------------------------+
+| Catherine Zeta-Jones |   52 |          1969 | dona       | dona madura               |
++----------------------+------+---------------+------------+---------------------------+
+1 row in set (0.00 sec)
+
++---------------+------+---------------+------------+---------------------------+
+| nom_actor     | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++---------------+------+---------------+------------+---------------------------+
+| Javier Bardem |   52 |          1969 | home       | home madur                |
++---------------+------+---------------+------------+---------------------------+
+1 row in set (0.00 sec)
+
++------------+------+---------------+------------+---------------------------+
+| nom_actor  | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++------------+------+---------------+------------+---------------------------+
+| Tom Cruise |   59 |          1962 | home       | home madur                |
++------------+------+---------------+------------+---------------------------+
+1 row in set (0.00 sec)
+
++------------+------+---------------+------------+---------------------------+
+| nom_actor  | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++------------+------+---------------+------------+---------------------------+
+| Jamie Foxx |   54 |          1967 | home       | home madur                |
++------------+------+---------------+------------+---------------------------+
+1 row in set (0.00 sec)
+
++--------------+------+---------------+------------+---------------------------+
+| nom_actor    | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++--------------+------+---------------+------------+---------------------------+
+| Jessica Alba |   40 |          1981 | dona       | dona adulta               |
++--------------+------+---------------+------------+---------------------------+
+1 row in set (0.00 sec)
+
++---------------+------+---------------+------------+---------------------------+
+| nom_actor     | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++---------------+------+---------------+------------+---------------------------+
+| Ioan Gruffudd |   48 |          1973 | home       | home madur                |
++---------------+------+---------------+------------+---------------------------+
+1 row in set (0.00 sec)
+
++-------------------+------+---------------+------------+---------------------------+
+| nom_actor         | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++-------------------+------+---------------+------------+---------------------------+
+| Robert Downey Jr. |   56 |          1965 | home       | home madur                |
++-------------------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++-----------------+------+---------------+------------+---------------------------+
+| nom_actor       | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++-----------------+------+---------------+------------+---------------------------+
+| Gwyneth Paltrow |   49 |          1972 | dona       | dona madura               |
++-----------------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++-----------------+------+---------------+------------+---------------------------+
+| nom_actor       | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++-----------------+------+---------------+------------+---------------------------+
+| Chris Hemsworth |   38 |          1983 | home       | home adult                |
++-----------------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++--------------+------+---------------+------------+---------------------------+
+| nom_actor    | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++--------------+------+---------------+------------+---------------------------+
+| Mark Ruffalo |   54 |          1967 | home       | home madur                |
++--------------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++-------------+------+---------------+------------+---------------------------+
+| nom_actor   | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++-------------+------+---------------+------------+---------------------------+
+| Chris Evans |   40 |          1981 | home       | home adult                |
++-------------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++--------------------+------+---------------+------------+---------------------------+
+| nom_actor          | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++--------------------+------+---------------+------------+---------------------------+
+| Scarlett Johansson |   37 |          1984 | dona       | dona adulta               |
++--------------------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++---------------+------+---------------+------------+---------------------------+
+| nom_actor     | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++---------------+------+---------------+------------+---------------------------+
+| Jeremy Renner |   40 |          1981 | home       | home adult                |
++---------------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++--------------+------+---------------+------------+---------------------------+
+| nom_actor    | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++--------------+------+---------------+------------+---------------------------+
+| James Spader |   61 |          1960 | home       |                           |
++--------------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++-----------------+------+---------------+------------+---------------------------+
+| nom_actor       | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++-----------------+------+---------------+------------+---------------------------+
+| Michael Chiklis |   52 |          1969 | home       | home madur                |
++-----------------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++---------------+------+---------------+------------+---------------------------+
+| nom_actor     | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++---------------+------+---------------+------------+---------------------------+
+| Hayley Atwell |   39 |          1982 | dona       | dona adulta               |
++---------------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++----------------+------+---------------+------------+---------------------------+
+| nom_actor      | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++----------------+------+---------------+------------+---------------------------+
+| Sebastian Stan |   39 |          1982 | home       | home adult                |
++----------------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++---------------+------+---------------+------------+---------------------------+
+| nom_actor     | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++---------------+------+---------------+------------+---------------------------+
+| Elliott Gould |   83 |          1938 | home       | home gran                 |
++---------------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++----------------+------+---------------+------------+---------------------------+
+| nom_actor      | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++----------------+------+---------------+------------+---------------------------+
+| George Clooney |   60 |          1961 | home       | home madur                |
++----------------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++-----------+------+---------------+------------+---------------------------+
+| nom_actor | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++-----------+------+---------------+------------+---------------------------+
+| Brad Pitt |   58 |          1963 | home       | home madur                |
++-----------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++---------------+------+---------------+------------+---------------------------+
+| nom_actor     | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++---------------+------+---------------+------------+---------------------------+
+| Elliott Gould |   83 |          1938 | home       | home gran                 |
++---------------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++----------------+------+---------------+------------+---------------------------+
+| nom_actor      | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++----------------+------+---------------+------------+---------------------------+
+| George Clooney |   60 |          1961 | home       | home madur                |
++----------------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++-----------+------+---------------+------------+---------------------------+
+| nom_actor | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++-----------+------+---------------+------------+---------------------------+
+| Brad Pitt |   58 |          1963 | home       | home madur                |
++-----------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++-----------------+------+---------------+------------+---------------------------+
+| nom_actor       | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++-----------------+------+---------------+------------+---------------------------+
+| Joaquin Phoenix |   47 |          1974 | home       | home madur                |
++-----------------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++----------------+------+---------------+------------+---------------------------+
+| nom_actor      | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++----------------+------+---------------+------------+---------------------------+
+| Robert de Niro |   78 |          1943 | home       | home gran                 |
++----------------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
++-------------+------+---------------+------------+---------------------------+
+| nom_actor   | anys | anynaix_actor | sexe_actor | Paper que pot interpretar |
++-------------+------+---------------+------------+---------------------------+
+| Zazie Beetz |   30 |          1991 | dona       | dona adulta               |
++-------------+------+---------------+------------+---------------------------+
+1 row in set (0.01 sec)
+
+Query OK, 0 rows affected (0.01 sec)
+
 ```
 
 ---
